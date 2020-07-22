@@ -57,8 +57,6 @@ router.get("/double", (req, res) => {
         return res.json(results);
     }
 })
-console.log(req.query)
-console.log(sqlValues)
 });
 
 // triple choice 
