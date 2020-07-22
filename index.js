@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require('express');
 const app = express();
-// const api = require("./routes");
+const api = require("./routes");
 const port = process.env.DB_PORT || 3000;
 const cors = require('cors');
 
@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use('/api', api);
+app.use('/api', api);
 
 app.listen(port, (err) => {
   if (err) {
