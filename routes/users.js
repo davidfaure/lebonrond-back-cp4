@@ -27,6 +27,26 @@ router.get("/", (req, res) => {
 })
 });
 
+router.get('/:id/favorite', (req, res) => {
+  sql = 'SELECT * FROM users as u JOIN favorite as f on f.users_id = u.id JOIN annonces as a on f.annonces_id = a.id WHERE u.id = ?';
+
+  db.query(sql, req.params.id, (err, results) => {
+    if (err) {
+      return res.status(500).json({
+          error: err.message,
+          sql: err.sql
+      })
+    } 
+
+    if (results.length === 0) {
+      return res.send("Les annonces favorites de l'utilisateur n'ont pas pu etre trouvées")
+    }
+
+    return res.json(results);
+
+  })
+})
+
 router.get('/:id', (req, res) => {
 
   db.query('SELECT * FROM users WHERE id = ?', req.params.id, (err, results) => {
