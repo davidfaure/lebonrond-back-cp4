@@ -16,9 +16,12 @@ router.get("/", (req, res) => {
   } else if (req.query.region) {
     sql += ' WHERE region = ?';
     sqlValues.push(req.query.region);
-  } 
+  } else if (req.query.name) {
+    sql += ` WHERE name LIKE %?%`
+    sqlValues.push(req.query.name)
+  }
 
-  db.query(sql, sqlValues, (err, results) => {
+  db.query(sql, sqlValues[0], (err, results) => {
     if (err) {
         return res.status(500).json({
             error: err.message,
@@ -29,7 +32,7 @@ router.get("/", (req, res) => {
     }
 })
 console.log(req.query)
-console.log(sqlValues)
+console.log(sqlValues[0])
 });
 
 // 2 choices query
@@ -39,19 +42,10 @@ router.get("/double", (req, res) => {
   let sql = 'SELECT * FROM annonces';
   const sqlValues= [];
 
-  if (req.query.category && req.query.user) {
-    sql += ' WHERE category_id = ? AND users_id = ?';
-    sqlValues.push(req.query.category, req.query.user);
-  } else if (req.query.category && req.query.region) {
+  if (req.query.category && req.query.region) {
     sql += ' WHERE category_id = ? AND region = ?';
     sqlValues.push(req.query.category, req.query.region);
-  } else if (req.query.region && req.query.user) {
-    sql += ' WHERE region = ? AND users_id = ?';
-    sqlValues.push(req.query.region, req.query.user);
-  } else if (req.query.region && req.query.user) {
-    sql += ' WHERE region = ? AND users_id = ?';
-    sqlValues.push(req.query.region, req.query.user);
-  } 
+  }
 
   db.query(sql, sqlValues, (err, results) => {
     if (err) {
@@ -158,5 +152,22 @@ router.put('/:id', (req, res) => {
 
   })
 })
+
+router.delete("/:id", (req, res) => {
+  db.query(
+      "DELETE FROM annonces WHERE id = ?",
+      req.params.id,
+      (err, resutls) => {
+      if (err) {
+          return res.status(500).json({
+          error: err.message,
+          sql: err.sql,
+          });
+      } else {
+          return res.status(200).json({ statut: "deleted" });
+      }
+      }
+  );
+});
 
 module.exports = router;
