@@ -31,8 +31,6 @@ router.get("/", (req, res) => {
         return res.json(results);
     }
 })
-console.log(req.query)
-console.log(sqlValues[0])
 });
 
 // 2 choices query
@@ -81,8 +79,6 @@ router.get("/triple", (req, res) => {
         return res.json(results);
     }
 })
-console.log(req.query)
-console.log(sqlValues)
 });
 
 router.get('/:id', (req, res) => {
