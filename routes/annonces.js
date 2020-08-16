@@ -16,55 +16,53 @@ router.get("/", (req, res) => {
     sql += " WHERE name LIKE ?";
     sqlValues.push("%" + req.query.search + "%");
   } else if (req.query.region) {
-    sql += ' WHERE region = ?';
+    sql += " WHERE region = ?";
     sqlValues.push(req.query.region);
   }
 
   db.query(sql, sqlValues, (err, results) => {
     if (err) {
-        return res.status(500).json({
-            error: err.message,
-            sql: err.sql
-        })
+      return res.status(500).json({
+        error: err.message,
+        sql: err.sql,
+      });
     } else {
-        return res.json(results);
+      return res.json(results);
     }
-})
+  });
 });
 
 // 2 choices query
 
 router.get("/double", (req, res) => {
-
-  let sql = 'SELECT * FROM annonces';
-  const sqlValues= [];
+  let sql = "SELECT * FROM annonces";
+  const sqlValues = [];
 
   if (req.query.category && req.query.region) {
-    sql += ' WHERE category_id = ? AND region = ?';
+    sql += " WHERE category_id = ? AND region = ?";
     sqlValues.push(req.query.category, req.query.region);
   }
 
   db.query(sql, sqlValues, (err, results) => {
     if (err) {
-        return res.status(500).json({
-            error: err.message,
-            sql: err.sql
-        })
+      return res.status(500).json({
+        error: err.message,
+        sql: err.sql,
+      });
     } else {
-        return res.json(results);
+      return res.json(results);
     }
-})
+  });
 });
 
-// triple choice 
+// triple choice
 
 router.get("/triple", (req, res) => {
-
-  let sql = 'SELECT * FROM annonces';
-  const sqlValues= [];
+  let sql = "SELECT * FROM annonces";
+  const sqlValues = [];
 
   if (req.query.category && req.query.user && req.query.region) {
-    sql += ' WHERE category_id = ? AND users_id = ? AND region = ?';
+    sql += " WHERE category_id = ? AND users_id = ? AND region = ?";
     sqlValues.push(req.query.category, req.query.user, req.query.region);
   }
 
@@ -173,25 +171,21 @@ router.put("/:id", (req, res) => {
   );
 });
 
-<<<<<<< HEAD
-module.exports = router;
-=======
 router.delete("/:id", (req, res) => {
   db.query(
-      "DELETE FROM annonces WHERE id = ?",
-      req.params.id,
-      (err, resutls) => {
+    "DELETE FROM annonces WHERE id = ?",
+    req.params.id,
+    (err, resutls) => {
       if (err) {
-          return res.status(500).json({
+        return res.status(500).json({
           error: err.message,
           sql: err.sql,
-          });
+        });
       } else {
-          return res.status(200).json({ statut: "deleted" });
+        return res.status(200).json({ statut: "deleted" });
       }
-      }
+    }
   );
 });
 
 module.exports = router;
->>>>>>> 555e13131ec37cbd00bb88f8f97ed96fa9cafccb
